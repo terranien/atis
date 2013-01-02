@@ -5,10 +5,10 @@ Gestionnaire Météo:
            vérifier le chemin des fichiers (différent Windows/Linux)
            vérifier system(" clear ") pour effacer l'écran
            utilse 2 getchar pour pause écran (car le buffer garde le premier ENTER et je ne sais plus comment éviter cela)
-           
+
 
 !programme: affiche menu 3 options
-                      1: vérifie si ATIS existe ou sinon le crée et y écrit un string 
+                      1: vérifie si ATIS existe ou sinon le crée et y écrit un string
                       2: écrit un second string dans atis si read_lock n'existe pas sinon ne fait rien !! mode a+ pour écrire à la
                       suite du premier string (si w+ on écrase le fichier)
                       3: quitter
@@ -20,7 +20,7 @@ Gestionnaire Météo:
 #include <ctype.h>
 #include <fcntl.h>
 
-FILE * fpA;
+int fpA;
 FILE * fpW;
 FILE * fpR;
 char * fileA = "atis.txt";
@@ -37,22 +37,22 @@ void menu(){
 }
 
 void verifATIS() {
- fpA = fopen(fileA,"r");
+ fpA = open(fileA,O_RDONLY,"666");
  if(fpA == 0) { //atis pas trouvé => création et écriture
-  fpA = fopen(fileA, "w");
+  fpA = open(fileA,O_RDONLY,"666");
   fprintf(fpA,"%s","EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040");
-  fclose(fpA); 
+  fclose(fpA);
   printf("Le fichier ATIS a été créé\n");
   getchar();
  }
  else {
   printf("Fichier ATIS trouvé");
   getchar();
- } 
+ }
 }
 
 void ecrireATIS() {
- fpR = fopen(fileR, "r");    
+ fpR = fopen(fileR, "r");
  if(fpR != 0) { //read_lock existe => atis est lu par serveur => retour menu
   printf("Le fichier ATIS est en cours de lecture\n");
   getchar();
@@ -62,7 +62,7 @@ void ecrireATIS() {
   fclose(fpW);
   fpA = fopen(fileA, "a+"); //a+ = rajoute à la suite >< w+ = écraser fichier
   fprintf(fpA,"%s","EBBR 0615 20015KT 8000 RA SCT010 OVC015 TEMPO 0608 5000 RA BKN005 BECMG 0810 9999 NSW BKN025");
-  fclose(fpA); 
+  fclose(fpA);
   remove(fileW);
   printf("Le fichier ATIS a été modifié");
   getchar();
@@ -82,7 +82,7 @@ int main() {
                menu();
               }
     break;
- 
+
     case '2': {
                ecrireATIS();
                getchar();
@@ -92,5 +92,5 @@ int main() {
    }
  }
  while(choix != 'x');
- return 0; 
-} 
+ return 0;
+}
