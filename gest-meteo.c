@@ -20,7 +20,9 @@ Gestionnaire Météo:
 #include <ctype.h>
 #include <fcntl.h>
 
+int taille = 80;
 int fpA;
+//FILE* fpa;
 FILE * fpW;
 FILE * fpR;
 char * fileA = "atis.txt";
@@ -37,11 +39,14 @@ void menu(){
 }
 
 void verifATIS() {
- fpA = open(fileA,O_RDONLY,"666");
+ //fpA = fopen(fileA,"r");
+ fpA = open(fileA,O_RDONLY);
  if(fpA == 0) { //atis pas trouvé => création et écriture
-  fpA = open(fileA,O_RDONLY,"666");
-  fprintf(fpA,"%s","EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040");
-  fclose(fpA);
+  //fpA = fopen(fileA,"r");
+  fpA = open(fileA,O_RDONLY);
+  //fprintf(fpa,"%s","EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040");
+  write(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
+  close(fpA);
   printf("Le fichier ATIS a été créé\n");
   getchar();
  }
