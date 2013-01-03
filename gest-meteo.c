@@ -42,12 +42,12 @@ void menu(){
 
 void verifATIS() {
  //fpA = fopen(fileA,"r");
- fpA = open(fileA,O_RDONLY);
+ fpA = open(fileA,O_RDWR); //Lecture et écriture
  if(fpA == 0) { //atis pas trouvé => création et écriture
   //fpA = fopen(fileA,"r");
-  fpA = open(fileA,O_RDONLY);
+  fpA = open(fileA,O_RDWR);
   //fprintf(fpa,"%s","EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040");
-  read(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
+  write(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
   close(fpA);
   printf("Le fichier ATIS a été créé\n");
   getchar();
@@ -71,9 +71,9 @@ void ecrireATIS() {
   //fclose(fpW);
   close(fpW);
   //fpA = fopen(fileA, "a+"); //a+ = rajoute à la suite >< w+ = écraser fichier
-  fpA = open(fileA,O_APPEND | O_WRONLY | O_CREAT); //APPEND se place e nfn di fichier, WRONLY écriture, CREAT crée si existe pas
+  fpA = open(fileA,O_APPEND | O_WRONLY | O_CREAT); //APPEND se place en fin de fichier, WRONLY écriture, CREAT crée si existe pas
   //fprintf(fpA,"%s","EBBR 0615 20015KT 8000 RA SCT010 OVC015 TEMPO 0608 5000 RA BKN005 BECMG 0810 9999 NSW BKN025");
-  read(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
+  write(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
   //fclose(fpA);
   close(fpA);
   remove(fileW);
