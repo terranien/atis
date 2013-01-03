@@ -22,9 +22,11 @@ Gestionnaire Météo:
 
 int taille = 80;
 int fpA;
-//FILE* fpa;
+int fpW;
+int fpR;
+/*FILE* fpa;
 FILE * fpW;
-FILE * fpR;
+FILE * fpR;*/
 char * fileA = "atis.txt";
 char * fileR = "read_lock.txt";
 char * fileW = "write_lock.txt";
@@ -45,7 +47,7 @@ void verifATIS() {
   //fpA = fopen(fileA,"r");
   fpA = open(fileA,O_RDONLY);
   //fprintf(fpa,"%s","EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040");
-  write(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
+  read(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
   close(fpA);
   printf("Le fichier ATIS a été créé\n");
   getchar();
@@ -57,17 +59,23 @@ void verifATIS() {
 }
 
 void ecrireATIS() {
- fpR = fopen(fileR, "r");
+ //fpR = fopen(fileR, "r");
+ fpR = open(fileR,O_RDONLY);
  if(fpR != 0) { //read_lock existe => atis est lu par serveur => retour menu
   printf("Le fichier ATIS est en cours de lecture\n");
   getchar();
  }
  else {
-  fpW = fopen(fileW, "w"); //atis est libre => ecriture nouvelle ligne
-  fclose(fpW);
-  fpA = fopen(fileA, "a+"); //a+ = rajoute à la suite >< w+ = écraser fichier
-  fprintf(fpA,"%s","EBBR 0615 20015KT 8000 RA SCT010 OVC015 TEMPO 0608 5000 RA BKN005 BECMG 0810 9999 NSW BKN025");
-  fclose(fpA);
+  //fpW = fopen(fileW, "w"); //atis est libre => ecriture nouvelle ligne
+  fpW = open(fileW,O_WRONLY);
+  //fclose(fpW);
+  close(fpW);
+  //fpA = fopen(fileA, "a+"); //a+ = rajoute à la suite >< w+ = écraser fichier
+  fpA = open(fileA,O_APPEND | O_WRONLY | O_CREAT); //APPEND se place e nfn di fichier, WRONLY écriture, CREAT crée si existe pas
+  //fprintf(fpA,"%s","EBBR 0615 20015KT 8000 RA SCT010 OVC015 TEMPO 0608 5000 RA BKN005 BECMG 0810 9999 NSW BKN025");
+  read(fpA,"EBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
+  //fclose(fpA);
+  close(fpA);
   remove(fileW);
   printf("Le fichier ATIS a été modifié");
   getchar();
