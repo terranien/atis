@@ -34,7 +34,7 @@ char * fileW = "write_lock.txt";
 void menu(){
  system("clear");
  printf("Options: \n");
- printf("1: Vérifier existence ATIS\n");
+ printf("1: Verifier existence ATIS\n");
  printf("2: Modifier ATIS\n");
  printf("x: Quitter\n");
  printf("Choix: ");
