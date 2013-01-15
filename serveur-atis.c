@@ -23,12 +23,14 @@
 
 int dansPool[2]; /* Tableau pour le pool*/
 int pereEnfant[NBENFANTS][2];
+char * fileW = "write_lock.txt";
 
 void traiterRequete(requete_t *requete, FILE *f){
   reponse_t reponse;
   char ligne[256];
   int fdW;
   int nbWrite;
+  int nb;
 
   /* Calcul reponse->pointAccesPrive */
   strcpy(reponse.pointAccesPrive, "");
@@ -84,7 +86,12 @@ void traiterRequete(requete_t *requete, FILE *f){
 void attenteRequete(int monNum){
   requete_t requete;
   int f;
+  int fpW;
 
+  fpW = open(fileW,O_RDONLY); //ouverture du fichier lock
+  while (fpW > 0){
+      printf("Fichier Atis en ecriture, veuillez attendre.");
+    }// boucle while tant que fichier lock ouvert
   /* Ouverture du fichier ATIS par le serveur*/
   f = open("atis.txt", O_RDONLY);
   if (f == NULL) {  /*Vérifier existence ATIS*/
