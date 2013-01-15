@@ -19,6 +19,7 @@ Gestionnaire Météo:
 #include <string.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <errno.h>
 
 int taille = 78;
 int fpA;
@@ -67,7 +68,7 @@ void ecrireATIS() {
  }
  else {*/
   //fpW = fopen(fileW, "w"); //atis est libre => ecriture nouvelle ligne
-  fpW = open(fileW,O_RDONLY);
+  fpW = open(fileW,O_CREAT);
   //fclose(fpW);
   //fpA = fopen(fileA, "a+"); //a+ = rajoute à la suite >< w+ = écraser fichier
   fpA = open(fileA,O_APPEND | O_WRONLY | O_CREAT); //APPEND se place en fin de fichier, WRONLY écriture, CREAT crée si existe pas
@@ -75,7 +76,7 @@ void ecrireATIS() {
   write(fpA,"\nEBLG 1803 00000KT 0600 FG OVC008 BKN040 PROB40 2024 0300 DZ FG OVC002 BKN040",taille);
   //fclose(fpA);
   printf("Le fichier ATIS a ete modifie\n");
-  printf("Valeur de fpW = %d ",fpW);
+  printf("Valeur de fpW = %d\n",fpW);
   close(fpA);
   close(fpW);
   remove(fileW);

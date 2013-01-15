@@ -32,7 +32,7 @@ void traiterRequete(requete_t *requete, FILE *f){
 
   /* Calcul reponse->pointAccesPrive */
   strcpy(reponse.pointAccesPrive, "");
-           
+
   /* Calcul reponse.contenu. */
   while (feof(f) == 0) {
     if (fgets(ligne, sizeof(ligne), f) != NULL) {
@@ -48,7 +48,7 @@ void traiterRequete(requete_t *requete, FILE *f){
   else {
     strcpy(reponse.contenu,"Désolé, je n'ai pas trouvé cette demande");
   }
-  
+
   /* En revanche, on se remet au début du fichier pour que la prochaine */
   /* recherche de ce fils se déroule correctement (NB : on n'a pas      */
   /* besoin de faire clearerr(f) car fseek efface l'indicateur de fin   */
@@ -83,10 +83,10 @@ void traiterRequete(requete_t *requete, FILE *f){
 
 void attenteRequete(int monNum){
   requete_t requete;
-  FILE *f;
+  int f;
 
   /* Ouverture du fichier ATIS par le serveur*/
-  f = fopen("atis.txt", "r");
+  f = open("atis.txt", O_RDONLY);
   if (f == NULL) {  /*Vérifier existence ATIS*/
     perror("open(atis.txt)");
     exit(EXIT_FAILURE);
@@ -107,7 +107,7 @@ void attenteRequete(int monNum){
     traiterRequete(&requete,f);
   }
 }
-    
+
 int main() {
   requete_t requete;
   int fdR;
@@ -173,4 +173,4 @@ int main() {
 }
 
 
-   
+
