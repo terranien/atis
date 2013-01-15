@@ -23,6 +23,7 @@
 
 int dansPool[2]; /* Tableau pour le pool*/
 int pereEnfant[NBENFANTS][2];
+int fpW;
 char * fileW = "write_lock.txt";
 
 void traiterRequete(requete_t *requete, FILE *f){
@@ -86,7 +87,6 @@ void traiterRequete(requete_t *requete, FILE *f){
 void attenteRequete(int monNum){
   requete_t requete;
   int f;
-  int fpW;
 
   fpW = open(fileW,O_RDONLY); //ouverture du fichier lock
   while (fpW > 0){
